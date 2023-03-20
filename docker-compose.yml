@@ -1,0 +1,29 @@
+version: '2'
+services:
+  db:                             # db为标签
+    image: mysql:5.6    
+    container_name: mysql_01      # container_name表示 生成的容器名
+    ports:                        # 映射主机的33060端口到容器的3306，外部主机可以直接通过宿主机ip:33060 访问到 MySQL 的服务。
+      - "3306:3306"
+    volumes:                      # volumes表示将宿主机的路径挂载到容器的路径，注意./mysqldb是主机的数据库文件
+      - ./mysqldb:/var/lib/mysql
+    environment:                  # environment环境变量：对于mysql镜像以root登录需要提供密码MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=news
+      - MYSQL_ROOT_PASSWORD=123456
+  web:                               # web标签
+    build:                           # 指定建立Dockerfile的路径和名称
+      context: .
+      dockerfile: Dockerfile_py
+    container_name: django_01        # 指定容器名django_01
+    command: python3 newsapi/manage.py runserver 0.0.0.0:8000   # 覆盖容器启动的默认命令，这里启动Django
+    volumes:                         # 将宿主机当前路径挂载到容器的/home路径
+      - .:/home/dockerDemo
+    ports:                           # 将主机端口映射到容器端口
+      - "8000:8000"
+    depends_on:                      # 依赖于db服务启动
+      - db  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080

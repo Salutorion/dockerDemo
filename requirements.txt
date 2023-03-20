@@ -1,0 +1,9 @@
+django==2.0.3
+djangorestframework==3.8.2
+pymysql
+Markdown
+django-filter
+django-crispy-forms
+django-cors-headers
+django-rest-swagger
+Pillow
