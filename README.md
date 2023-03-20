@@ -1,83 +1,47 @@
 # Quick Start 
 
-###  启动服务
-```sh
-# 
-docker-compose build
-docker-compose up -d
-```
 
-### 导入数据
-
-1. 打开数据库网页
-
-
-
-
-# NEWS
-基于Django前后端分离开发-新闻管理系统
-
-
-## 一、开发目的
-通过新闻系统前后端分离开发，在后端开发web api的过程中让你快速熟练掌握django rest framework框架的开发，让你要项目实战中掌握rest 标准api的开发技术。在前端开发让你快捷简便的掌握django模板调用api的过程。
-
-## 二、开发环境
-•开发工具:Pycharm
-
-•开发环境为: Windows10、Python3.6.8、Django2.0.3、djangorestframework(3.8.2)
-
-•数据库：Mysql5.6
-
-•前端：Div+Css 、ajax
-
-•后端：Django2.0.3、djangorestframework(3.8.2)
-
-## 三、创建项目和应用
-```
-django-admin.py startproject newsapi
-python manage.py startapp article
-```
-## 四、安装项目所需依赖包
-```
-pip install django==2.0.3
-pip install djangorestframework==3.8.2
-pip install pymysql
-pip install Markdown
-pip install django-filter
-pip install django-crispy-forms
-pip install django-cors-headers
-pip install django-rest-swagger
-```
-## 五、配置setting.py
-###### 注册app
-```
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'article', # 我们的app
-    'rest_framework', # 前后端分离框架
-    'crispy_forms',  # 展示表单
-    'django_filters', # 查询
-    'rest_framework.authtoken',  # 认证
-    ]
-```
-###### 连接mysql数据库
+### 修改数据库连接配置
 ```
 DATABASES = {
 'default': {
     'NAME': 'news',  # 数据库名
     'ENGINE': 'django.db.backends.mysql',
     'USER': 'root',  # 用户名
-    'PASSWORD': 'test',  # 密码
-    'HOST': '127.0.0.1',  # 电脑主机
+    'PASSWORD': '123456',  # 密码
+    'HOST': '192.168.0.107',  # 替换本机的IP
     'PORT': '3306',  # 端口
     'useSSL': 'false',
   }
 }
+
+
+### 启动服务
+
+```sh
+docker-compose build
+docker-compose up -d
 ```
-news.sql可选，可以自己手动添加新闻信息，也直接导入已存在的新闻信息。
-项目详解可参考：https://www.jianshu.com/nb/34691463
+
+### 导入数据
+
+1. 打开网页: http://0.0.0.0:8081/ 
+2. 输入用户名root ， 密码123456
+3. 在左侧sql命令中，把news.sql的内容复制进去，执行
+
+#### 创建登陆用户
+
+1. 打开swagger网页: http://0.0.0.0:8000/
+2. 找到`Post /user/ 用户查询和注册的` 接口
+3. 右侧点击`Try it out`, 并输入username，password
+
+#### 修改用户为超级管理员
+1. 进入数据库:  http://0.0.0.0:8081/ 
+2. 输入用户名root ， 密码123456, 数据库 news
+3. 找到`auth_user`表，点击`选择数据`
+4. 通过 username 找到刚才注册的账号
+5. 点击左侧的编辑，修改 `is_superuser`和`is_staff` 为1
+
+#### 浏览网页
+1. 打开网页: http://0.0.0.0:8000/admin/
+2. 输入刚才注册的账号密码
